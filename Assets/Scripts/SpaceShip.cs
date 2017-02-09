@@ -31,13 +31,18 @@ public class SpaceShip : MonoBehaviour {
         }
 
         // move the ship left and right, depending on the horizontal input
-        transform.position += Vector3.right * Input.GetAxis("Horizontal") * speed * Time.deltaTime;
+        //transform.position += Vector3.right * Input.GetAxis("Horizontal") * speed * Time.deltaTime;
 
         // if the fire button is pressed and we waited long enough since the last shot was fired, FIRE!
 		if (Input.GetButton("Fire") && (projectile==null || projectile.Equals(null))) {
             lastTimeFired = Time.time;
             FireTheLasers();
         } 
+    }
+
+    bool projectileExists()
+    {
+        return projectile == null || projectile.Equals(null);
     }
 
     /// <summary>
