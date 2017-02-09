@@ -12,8 +12,15 @@ public class Projectile : MonoBehaviour {
     [Tooltip("After how many seconds is the projectile destroyed")]
     public float lifeTime;
 
+<<<<<<< Updated upstream
 	Vector3 dir;
 	bool stuck = false;
+=======
+	public GameObject spaceShip;
+	public LineRenderer ropeLineRendererPrefab;
+	public LineRenderer ropeLineRenderer;
+	public Vector3 dir;
+>>>>>>> Stashed changes
 
     /// <summary>
     /// This is called by Unity. It starts the coroutine that destroyes the projectile after the lifetime.
@@ -23,6 +30,7 @@ public class Projectile : MonoBehaviour {
 		dir.z = 0;
 		dir.Normalize ();
         StartCoroutine(KillAfterSeconds(lifeTime));
+		ropeLineRenderer = Instantiate(ropeLineRendererPrefab, transform.position, Quaternion.identity);
     }
 
     /// <summary>
@@ -31,10 +39,19 @@ public class Projectile : MonoBehaviour {
     void Update () {
         transform.position += dir * speed * Time.deltaTime;
 		checkWrap();
+<<<<<<< Updated upstream
 		if (Input.GetButtonUp("Fire")) {
 			Destroy (gameObject);
 		}
+=======
+		updateRope();
+>>>>>>> Stashed changes
     }
+
+	void updateRope(){
+		ropeLineRenderer.SetPosition (0, spaceShip.transform.position);
+		ropeLineRenderer.SetPosition (1, transform.position);
+	}
 
 	void checkWrap(){
 		if (Camera.main.WorldToScreenPoint(transform.position).y > Screen.height) {
@@ -63,12 +80,20 @@ public class Projectile : MonoBehaviour {
     /// On collision the projectile is destroyed and if it hits an object with the tag "Asteroid" the asteroid will be notified it got hit.
     /// </summary>
     void OnTriggerEnter2D(Collider2D other){
+<<<<<<< Updated upstream
         if(other.CompareTag("Hook")){ // This checks if we hit an asteroid. The asteroid needs the "Asteroid" tag for this to work!!
             //Asteroid asteroid = other.GetComponent<Asteroid>(); // Grab the asteroid script from the hit GameObject
             //asteroid.OnHit(); // notify the asteroid it got hit
             //Destroy(gameObject); // Destory this projectile
 			stuck = true;
 			dir = new Vector3 (0, 0, 0);
+=======
+        if(other.CompareTag("Asteroid")){ // This checks if we hit an asteroid. The asteroid needs the "Asteroid" tag for this to work!!
+            Asteroid asteroid = other.GetComponent<Asteroid>(); // Grab the asteroid script from the hit GameObject
+            asteroid.OnHit(); // notify the asteroid it got hit
+            Destroy(gameObject); // Destory this projectile
+			Destroy(ropeLineRenderer);
+>>>>>>> Stashed changes
         }
     }
 
@@ -77,8 +102,13 @@ public class Projectile : MonoBehaviour {
     /// </summary>
     IEnumerator KillAfterSeconds(float seconds){
         yield return new WaitForSeconds(seconds);
+<<<<<<< Updated upstream
 		if (!stuck) {
 			Destroy (gameObject);
 		}
+=======
+        Destroy(gameObject);
+		Destroy(ropeLineRenderer);
+>>>>>>> Stashed changes
     }
 }
