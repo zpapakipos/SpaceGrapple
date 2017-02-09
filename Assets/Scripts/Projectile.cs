@@ -11,11 +11,13 @@ public class Projectile : MonoBehaviour {
     public float speed;
     [Tooltip("After how many seconds is the projectile destroyed")]
     public float lifeTime;
+	public Vector3 dir;
 
     /// <summary>
     /// This is called by Unity. It starts the coroutine that destroyes the projectile after the lifetime.
     /// </summary>
     void Start(){
+		dir = (Camera.main.ScreenToWorldPoint (Input.mousePosition) - transform.position).normalized;
         StartCoroutine(KillAfterSeconds(lifeTime));
     }
 
@@ -23,7 +25,7 @@ public class Projectile : MonoBehaviour {
     /// Update is called by Unity each frame. This moves the GameObject upwards at speed.
     /// </summary>
     void Update () {
-        transform.position += Vector3.up * speed * Time.deltaTime;
+        transform.position += dir * speed * Time.deltaTime;
     }
 
     /// <summary>
