@@ -37,10 +37,18 @@ public class Projectile : MonoBehaviour {
 			var curPos = transform.position;
 			curPos.y = Camera.main.ScreenToWorldPoint(new Vector3(0,0,0)).y;
 			transform.position = curPos;
-		}
-		if (Camera.main.WorldToScreenPoint(transform.position).y < 0) {
+		} else if (Camera.main.WorldToScreenPoint(transform.position).y < 0) {
 			var curPos = transform.position;
 			curPos.y = Camera.main.ScreenToWorldPoint(new Vector3(0,Screen.height,0)).y;
+			transform.position = curPos;
+		}
+		if (Camera.main.WorldToScreenPoint(transform.position).x > Screen.width) {
+			var curPos = transform.position;
+			curPos.x = Camera.main.ScreenToWorldPoint(new Vector3(0,0,0)).x;
+			transform.position = curPos;
+		} else if (Camera.main.WorldToScreenPoint(transform.position).x < 0) {
+			var curPos = transform.position;
+			curPos.x = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width,0,0)).x;
 			transform.position = curPos;
 		}
 	}
