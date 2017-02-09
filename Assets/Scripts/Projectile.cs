@@ -11,13 +11,16 @@ public class Projectile : MonoBehaviour {
     public float speed;
     [Tooltip("After how many seconds is the projectile destroyed")]
     public float lifeTime;
-	public Vector3 dir;
+
+	Vector3 dir;
 
     /// <summary>
     /// This is called by Unity. It starts the coroutine that destroyes the projectile after the lifetime.
     /// </summary>
     void Start(){
-		dir = (Camera.main.ScreenToWorldPoint (Input.mousePosition) - transform.position).normalized;
+		dir = (Camera.main.ScreenToWorldPoint (Input.mousePosition) - transform.position);
+		dir.z = 0;
+		dir.Normalize ();
         StartCoroutine(KillAfterSeconds(lifeTime));
     }
 
@@ -26,7 +29,21 @@ public class Projectile : MonoBehaviour {
     /// </summary>
     void Update () {
         transform.position += dir * speed * Time.deltaTime;
+		checkWrap();
     }
+
+	void checkWrap(){
+		if (Camera.main.WorldToScreenPoint(transform.position).y > Screen.height) {
+			var curPos = transform.position;
+			curPos.y = Camera.main.ScreenToWorldPoint(new Vector3(0,0,0)).y;
+			transform.position = curPos;
+		}
+		if (Camera.main.WorldToScreenPoint(transform.position).y < 0) {
+			var curPos = transform.position;
+			curPos.y = Camera.main.ScreenToWorldPoint(new Vector3(0,Screen.height,0)).y;
+			transform.position = curPos;
+		}
+	}
 
     /// <summary>
     /// This is called by Unity when the GameObject where this script is on collides with another GameObject. 

@@ -20,6 +20,8 @@ public class SpaceShip : MonoBehaviour {
 
     private float lastTimeFired = 0;
 
+	GameObject projectile = null;
+
     /// <summary>
     /// This is called by Unity every frame. It handles the ships movement and checks if it should fire
     /// </summary>
@@ -32,7 +34,7 @@ public class SpaceShip : MonoBehaviour {
         transform.position += Vector3.right * Input.GetAxis("Horizontal") * speed * Time.deltaTime;
 
         // if the fire button is pressed and we waited long enough since the last shot was fired, FIRE!
-        if (Input.GetButton("Fire") && (lastTimeFired + 1 / rateOfFire) < Time.time) {
+		if (Input.GetButton("Fire") && (projectile==null || projectile.Equals(null))) {
             lastTimeFired = Time.time;
             FireTheLasers();
         } 
@@ -54,6 +56,6 @@ public class SpaceShip : MonoBehaviour {
 
     void FireTheLasers(){
         AudioSource.PlayClipAtPoint(laserSound, transform.position);
-        Instantiate(projectilePrefab, transform.position + Vector3.up, Quaternion.identity);
+		projectile = Instantiate(projectilePrefab, transform.position + Vector3.up, Quaternion.identity);
     }
 }
